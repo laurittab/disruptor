@@ -1,6 +1,10 @@
-//
-// Configure setting up performance tests
-//
+configurations {
+    perftestCompileOnly
+    perftestCompileOnlyResolved {
+        extendsFrom perftestCompileOnly
+        canBeResolved = true
+    }
+}
 
 sourceSets {
     perftest {
@@ -19,6 +23,6 @@ task perfJar(type: Jar, group: 'build') {
     archiveAppendix.set('perf')
     from sourceSets.perftest.output
     from sourceSets.test.output
-    from { configurations.perftestCompileOnly.collect { it.isDirectory() ? it : zipTree(it) } }
+    from { configurations.perftestCompileOnlyResolved.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
